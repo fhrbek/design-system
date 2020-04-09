@@ -1,0 +1,34 @@
+parameters:
+  message:
+    default: Published new version of design-system package(s)
+    description: Notification message
+  branch:
+    default: master
+    description: git branch from which to publish
+
+steps:
+- name: npm
+  image: projectnebula/npm
+  spec:
+    command: run release
+    git:
+      name: design-system
+      branch:
+        $type: Parameter
+        name: branch
+      repository: https://github.com/puppetlabs/design-system.git
+    npm:
+      token:
+        $type: Secret
+        name: npm_token
+- name: slack-notification
+  dependsOn: npm
+  image: projectnebula/slack-notification
+  spec:
+    apitoken:
+      $type: Secret
+      name: slack-token
+    channel: "#nebula-workflows"
+    message:
+      $type: Parameter
+      name: message
