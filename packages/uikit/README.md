@@ -1,4 +1,4 @@
-# Puppet UI Toolkit
+# Puppet UI Toolkit!
 
 A toolkit for generating React projects, components, etc.
 
